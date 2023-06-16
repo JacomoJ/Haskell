@@ -18,6 +18,18 @@ len' = foldr (\_ acc -> acc + 1) 0
 len'' :: [a] -> Int
 len'' = foldl (\acc _ -> acc + 1) 0
 
+-- compute the minimum value in a list
+minlist :: [Int] -> Int
+minlist = foldr1 (min)
+
+-- compute the minimum value in a list
+minlist' :: [Int] -> Int
+minlist' = foldl1 (min)
+
+-- reverse the list
+reverse' :: [a] -> [a]
+reverse' = foldr (\x acc -> acc ++ [x]) []
+
 main :: IO ()
 main = do
   putStrLn "Run function: "
@@ -51,6 +63,36 @@ main = do
         Just lst -> do
           let res = len'' lst
           putStrLn ("The length is: " ++ show res)
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "5" -> do
+      putStrLn "Computing the minimum using foldr1: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just lst -> do
+          let res = minlist lst
+          putStrLn ("The min is: " ++ show res)
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "6" -> do
+      putStrLn "Computing the minimum using foldl1: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just lst -> do
+          let res = minlist lst
+          putStrLn ("The min is: " ++ show res)
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "7" -> do
+      putStrLn "Computing the reverse of the list: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just lst -> do
+          let res = reverse' lst
+          putStrLn ("The reversed list is: " ++ show res)
         Nothing -> do
           putStrLn "Please provide a list"
     _ -> putStrLn "Nothing"
