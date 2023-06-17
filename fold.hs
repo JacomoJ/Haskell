@@ -30,22 +30,57 @@ minlist' = foldl1 (min)
 reverse' :: [a] -> [a]
 reverse' = foldr (\x acc -> acc ++ [x]) []
 
+-- reverse the list
+reverse'' :: [a] -> [a]
+-- reverse'' = foldl (\acc x -> x : acc) []
+reverse'' = foldl (flip (:)) []
+
+-- takes two strings and remove the letters in the first string from the second one
+remove :: Eq s => [s] -> [s] -> [s]
+remove as = foldr (\c acc -> if c `notElem` as then c : acc else acc) []
+
+-- takes two strings and remove the letters in the first string from the second one
+remove' :: Eq s => [s] -> [s] -> [s]
+remove' as = foldl (\acc c -> if c `notElem` as then acc ++ [c] else acc) []
+
+-- filter using foldr
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' f = foldr (\x acc -> if f x then x : acc else acc) []
+
+-- filter using foldl
+filter'' :: (a -> Bool) -> [a] -> [a]
+filter'' f = foldl (\acc x -> if f x then acc ++ [x] else acc) []
+
+-- remove the adjancet duplicates
+remdups :: Eq a => [a] -> [a]
+remdups = foldr (\x acc -> if isNotHead x acc then x : acc else acc) []
+  where
+    isNotHead x [] = True
+    isNotHead x xs = x /= head xs
+
+-- remove the adjancet duplicates
+remdups' :: Eq a => [a] -> [a]
+remdups' = foldl (\acc x -> if isNotLast x acc then acc ++ [x] else acc) []
+  where
+    isNotLast x [] = True
+    isNotLast x xs = x /= last xs -- needs to be last xs
+
 main :: IO ()
 main = do
   putStrLn "Run function: "
   choice <- getLine
   case choice of
-    "1" -> do
+    "sum'" -> do
       putStrLn "Computing the sum up to: "
       n <- getLine
       let res = sum' (read n :: Int)
       putStrLn ("Sum of the number is " ++ show res)
-    "2" -> do
+    "sumsq" -> do
       putStrLn "Computing the sum of the squares up to: "
       n <- getLine
       let res = sumsq (read n :: Int)
       putStrLn ("Sum of the squares is " ++ show res)
-    "3" -> do
+    "len'" -> do
       putStrLn "Computing the length of the list w/ foldr: "
       xs <- getLine
       let list = readMaybe xs :: Maybe [Int]
@@ -55,7 +90,7 @@ main = do
           putStrLn ("The length is: " ++ show res)
         Nothing -> do
           putStrLn "Please provide a list"
-    "4" -> do
+    "len''" -> do
       putStrLn "Computing the length of the list w/ foldl: "
       xs <- getLine
       let list = readMaybe xs :: Maybe [Int]
@@ -65,7 +100,7 @@ main = do
           putStrLn ("The length is: " ++ show res)
         Nothing -> do
           putStrLn "Please provide a list"
-    "5" -> do
+    "minlist" -> do
       putStrLn "Computing the minimum using foldr1: "
       xs <- getLine
       let list = readMaybe xs :: Maybe [Int]
@@ -75,7 +110,7 @@ main = do
           putStrLn ("The min is: " ++ show res)
         Nothing -> do
           putStrLn "Please provide a list"
-    "6" -> do
+    "minlist'" -> do
       putStrLn "Computing the minimum using foldl1: "
       xs <- getLine
       let list = readMaybe xs :: Maybe [Int]
@@ -85,14 +120,74 @@ main = do
           putStrLn ("The min is: " ++ show res)
         Nothing -> do
           putStrLn "Please provide a list"
-    "7" -> do
-      putStrLn "Computing the reverse of the list: "
+    "reverse'" -> do
+      putStrLn "Computing the reverse of the list w/ foldr: "
       xs <- getLine
       let list = readMaybe xs :: Maybe [Int]
       case list of
         Just lst -> do
           let res = reverse' lst
           putStrLn ("The reversed list is: " ++ show res)
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "reverse''" -> do
+      putStrLn "Computing the reverse of the lis w/ foldl: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just lst -> do
+          let res = reverse' lst
+          putStrLn ("The reversed list is: " ++ show res)
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "remove" -> do
+      putStrLn "Gimme the first string: "
+      first <- getLine
+      putStrLn "Gimme the second string: "
+      second <- getLine
+      let res = remove first second
+      putStrLn res
+    "remove'" -> do
+      putStrLn "Gimme the first string: "
+      first <- getLine
+      putStrLn "Gimme the second string: "
+      second <- getLine
+      let res = remove first second
+      putStrLn res
+    "filter'" -> do
+      putStrLn "Give the list: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just list -> do
+          putStrLn ("New the list is: " ++ show (filter' even list))
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "filter''" -> do
+      putStrLn "Give the list: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just list -> do
+          putStrLn ("New the list is: " ++ show (filter'' even list))
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "remdups" -> do
+      putStrLn "Give the list: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just list -> do
+          putStrLn ("New the list is: " ++ show (remdups list))
+        Nothing -> do
+          putStrLn "Please provide a list"
+    "remdups'" -> do
+      putStrLn "Give the list: "
+      xs <- getLine
+      let list = readMaybe xs :: Maybe [Int]
+      case list of
+        Just list -> do
+          putStrLn ("New the list is: " ++ show (remdups' list))
         Nothing -> do
           putStrLn "Please provide a list"
     _ -> putStrLn "Nothing"
