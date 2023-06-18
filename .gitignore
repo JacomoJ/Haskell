@@ -1,4 +1,4 @@
-*.hi
-*.o
-fold
-list_comprehension
+/*.hi
+/*.o
+/fold
+/list_comprehension
