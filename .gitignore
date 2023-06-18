@@ -1,3 +1,4 @@
-./*.hi
-./*.o
-./fold
+*.hi
+*.o
+fold
+list_comprehension

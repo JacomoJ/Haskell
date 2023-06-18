@@ -65,6 +65,10 @@ remdups' = foldl (\acc x -> if isNotLast x acc then acc ++ [x] else acc) []
     isNotLast x [] = True
     isNotLast x xs = x /= last xs -- needs to be last xs
 
+-- returns the list of all initial segments of a list
+inits :: [Char] -> [[Char]]
+inits = foldr (\x acc -> [] : map (x :) acc) []
+
 main :: IO ()
 main = do
   putStrLn "Run function: "
@@ -187,7 +191,12 @@ main = do
       let list = readMaybe xs :: Maybe [Int]
       case list of
         Just list -> do
-          putStrLn ("New the list is: " ++ show (remdups' list))
+          putStrLn ("New list is: " ++ show (remdups' list))
         Nothing -> do
           putStrLn "Please provide a list"
-    _ -> putStrLn "Nothing"
+    "inits" -> do
+      putStrLn "Give me a string: "
+      str <- getLine
+      let res = inits str
+      putStrLn ("New list is: " ++ show res)
+    _ -> putStrLn "Not a valid option"
